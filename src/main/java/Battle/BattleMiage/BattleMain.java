@@ -14,7 +14,6 @@ public class BattleMain
     {
     	ApacheRest rest = new ApacheRest();
     	String data = rest.Request_GET("https://gturnquist-quoters.cfapps.io/api/random");
-    	System.out.println(data);
     	//https://stackoverflow.com/questions/11874919/parsing-json-string-in-java
     	
     	AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BattleMain.class);
