@@ -17,7 +17,4 @@ public class BattleMain
     	AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BattleMain.class);
         Param tests = context.getBean(Param.class);
     }
-    
-    
-    
 }
