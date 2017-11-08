@@ -16,8 +16,6 @@ public class BattleMain
     	
     	AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BattleMain.class);
         Param tests = context.getBean(Param.class);
-
-    	//https://stackoverflow.com/questions/11874919/parsing-json-string-in-java		
     }
     
     
