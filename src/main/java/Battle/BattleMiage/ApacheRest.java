@@ -55,7 +55,7 @@ public class ApacheRest {
 	}
 	
 	/***
-	 * init pour vs joueurs 
+	 * init partie vs joueurs 
 	 * @return : id partie
 	 */
 	public String Init_versus_joueur()

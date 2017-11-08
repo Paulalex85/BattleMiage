@@ -1,9 +1,9 @@
 package Battle.BattleMiage;
 
 public class EpicHeroesLeague {
-	String playerId;
-	String playerName;
-	EpicHero fighters;
+	public String playerId;
+	public String playerName;
+	public EpicHero[] fighters;
 	
 	public EpicHeroesLeague() {
 		

@@ -1,11 +1,6 @@
 package Battle.BattleMiage;
 
 public class Board {
-
-	EpicHeroesLeague playerBoards;
-	int nbrTurnsLeft;
-	public Board()
-	{
-		
-	}
+	public EpicHeroesLeague[] playerBoards;
+	public int nbrTurnsLeft;
 }
