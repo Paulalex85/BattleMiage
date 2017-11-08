@@ -12,18 +12,11 @@ public class BattleMain
 {
     public static void main( String[] args ) throws FileNotFoundException 
     {
+    	ApacheRest rest = new ApacheRest("http://challengemiage.codeandplay.date/epic-ws/epic");
     	
     	AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BattleMain.class);
         Param tests = context.getBean(Param.class);
-       // tests.print();
-        
-    	ApacheRest rest = new ApacheRest();
-    	String data = rest.Request_GET(
-    			"http://challengemiage.codeandplay.date/epic-ws/epic/player/getIdEquipe/"
-    			+ tests.getName() 
-    			+ "/" 
-    			+ tests.getPassword()
-    			);
+
     	//https://stackoverflow.com/questions/11874919/parsing-json-string-in-java		
     }
     

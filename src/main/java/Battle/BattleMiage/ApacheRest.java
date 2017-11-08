@@ -54,13 +54,32 @@ public class ApacheRest {
 		this.id = Request_GET(args);
 	}
 	
+	/***
+	 * init pour vs joueurs 
+	 * @return : id partie
+	 */
 	public String Init_versus_joueur()
 	{
 		List<String> args = new ArrayList<String>();
-		args.add("player");
-		args.add("getIdEquipe");
-		args.add(nomEquipe);
-		args.add(mdpEquipe);
+		args.add("versus");
+		args.add("next");
+		args.add(id);
+		
+		return Request_GET(args);
+	}
+	
+	/***
+	 * Init partie vs bot
+	 * @param nBot : difficulte du bot
+	 * @return id de la partie
+	 */
+	public String Init_versus_bot(int nBot)
+	{
+		List<String> args = new ArrayList<String>();
+		args.add("practice");
+		args.add("new");
+		args.add(String.valueOf(nBot));
+		args.add(id);
 		
 		return Request_GET(args);
 	}
