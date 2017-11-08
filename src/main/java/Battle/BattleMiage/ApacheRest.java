@@ -84,4 +84,71 @@ public class ApacheRest {
 		return Request_GET(args);
 	}
 	
+	/***
+	 * 
+	 * @param idpartie : id de la partie
+	 * @return retourne le statut de la partie
+	 */
+	public String Statut_partie(String idpartie)
+	{
+		List<String> args = new ArrayList<String>();
+		args.add("game");
+		args.add("status");
+		args.add(idpartie);
+		args.add(id);
+		
+		return Request_GET(args);
+	}
+	
+	/***
+	 * 
+	 * @param idpartie : id de la partie
+	 * @return retourne plateau de jeu, equipe 1 est la notre 
+	 */
+	public String Plateau_jeu(String idpartie)
+	{
+		List<String> args = new ArrayList<String>();
+		args.add("game");
+		args.add("board");
+		args.add(idpartie);
+		args.add(id);
+		
+		return Request_GET(args);
+	}
+	
+	/***
+	 * 
+	 * @param idpartie : id de la partie
+	 * @return retourne dernier coup
+	 */
+	public String Dernier_Coup(String idpartie)
+	{
+		List<String> args = new ArrayList<String>();
+		args.add("game");
+		args.add("getlastmove");
+		args.add(idpartie);
+		args.add(id);
+		
+		return Request_GET(args);
+	}
+	
+	/***
+	 * 
+	 * @param idpartie id de la partie
+	 * @param coup detail coup joue
+	 * @return retourne statut
+	 */
+	public String Joue_Coup(String idpartie, String coup)
+	{
+		List<String> args = new ArrayList<String>();
+		args.add("game");
+		args.add("play");
+		args.add(idpartie);
+		args.add(id);
+		args.add(coup);
+		
+		return Request_GET(args);
+	}
+	
+	
 }
