@@ -5,12 +5,21 @@ public class NewGame {
 	Param param;
 	
 	String id_partie = "";
-	public NewGame(Param tests) {
+	public NewGame(Param tests, String difficulte) { // vs bot 
 		this.param = tests;
 		this.rest = new ApacheRest("http://challengemiage.codeandplay.date/epic-ws/epic");
 		
 		//TODO gerer si vs joueur ou vs bot avec param
-		id_partie = rest.Init_versus_bot(1);
+		id_partie = rest.Init_versus_bot(difficulte);
+		BoucleJeu boucle = new BoucleJeu(rest, id_partie);
+	}
+	
+	public NewGame(Param tests) { // vs team 
+		this.param = tests;
+		this.rest = new ApacheRest("http://challengemiage.codeandplay.date/epic-ws/epic");
+		
+		//TODO gerer si vs joueur ou vs bot avec param
+		id_partie = rest.Init_versus_joueur();
 	}
 	
 	

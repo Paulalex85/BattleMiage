@@ -73,12 +73,12 @@ public class ApacheRest {
 	 * @param nBot : difficulte du bot
 	 * @return id de la partie
 	 */
-	public String Init_versus_bot(int nBot)
+	public String Init_versus_bot(String nBot)
 	{
 		List<String> args = new ArrayList<String>();
 		args.add("practice");
 		args.add("new");
-		args.add(String.valueOf(nBot));
+		args.add(nBot);
 		args.add(id);
 		
 		return Request_GET(args);
