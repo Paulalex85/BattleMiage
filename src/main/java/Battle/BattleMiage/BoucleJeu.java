@@ -108,7 +108,21 @@ public class BoucleJeu {
 	}
 	
 	public void Action_personnage() {
-		
+		String action = "";
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0 ; j < 3 ; j++) {
+				if(!this.board.playerBoards[1].fighters[j].idDead) {
+					action += "A" + Integer.toString(i+1) + ",ATTACK,E" + Integer.toString(j+1);
+					break;
+				}
+			}
+			if(i != 2) {
+				action += "$";
+			}
+		}
+		System.out.println("Coup : " + action);
+		String retour = rest.Joue_Coup(this.id_partie, action);
+		Analyse_Joue_Coup(retour);
 	}
 	
 	public void Analyse_Joue_Coup(String s) {
