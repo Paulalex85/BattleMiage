@@ -66,12 +66,33 @@ public class BoucleJeu {
 			return true;
 		}
 	}
-	
+	public void afficherBoard(Board board)
+	{
+		System.out.println("Tours restants : "+board.nbrTurnsLeft);
+		for(int i = 0; i<2;i++){
+			for (int j = 0; j<3; j++)
+			{
+				System.out.println("i:"+i+", j:"+j);
+				
+				if(board.playerBoards[i].fighters != null || board.playerBoards[i].fighters[j]!= null){
+					//System.out.println(board.playerBoards[i].fighters[j].fighterClass);
+					System.out.println("--------------------------------------------------");
+					System.out.println("Team : "+board.playerBoards[i].playerName);
+					System.out.println("Perso : "+board.playerBoards[i].fighters[j].fighterClass);
+					System.out.println("Vie : "+board.playerBoards[i].fighters[j].currentLife);
+					System.out.println("Mana : "+board.playerBoards[i].fighters[j].currentMana);
+					System.out.println("Status : "+board.playerBoards[i].fighters[j].states);
+					System.out.println("--------------------------------------------------");
+				}
+			}
+		}
+	}
 	public void GetBoard () {
 		String plateau = rest.Plateau_jeu(id_partie);
 		
 		board = gson.fromJson(plateau, Board.class);
-		System.out.println("Board chargé");
+		//if(board != null)
+		//afficherBoard(board);
 	}
 	
 	public void Play() {
@@ -111,7 +132,7 @@ public class BoucleJeu {
 		String action = "";
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0 ; j < 3 ; j++) {
-				if(!this.board.playerBoards[1].fighters[j].idDead) {
+				if(!this.board.playerBoards[1].fighters[j].isDead) {
 					action += "A" + Integer.toString(i+1) + ",ATTACK,E" + Integer.toString(j+1);
 					break;
 				}

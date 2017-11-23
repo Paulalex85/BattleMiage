@@ -25,7 +25,7 @@ public class ApacheRest {
 		{
 			urlget += "/" + list_arg.get(i);
 		}
-		System.out.println("envoie: " + urlget);
+		//System.out.println("envoie: " + urlget);
 	    Client restClient = Client.create();
 	    WebResource webResource = restClient.resource(urlget);
 	    ClientResponse resp = webResource.accept("application/json")
@@ -34,7 +34,7 @@ public class ApacheRest {
 	        System.err.println("Unable to connect to the server");
 	    }
 	    String output = resp.getEntity(String.class);
-	    System.out.println("response: "+output);
+	    //System.out.println("response: "+output);
 	    return output;
 	}
 	
