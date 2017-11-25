@@ -1,5 +1,6 @@
 package Battle.BattleMiage;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.google.gson.Gson;
@@ -11,11 +12,22 @@ public class BoucleJeu {
 	boolean canPlay = false;
 	Board board;
 	Gson gson;
+	private Random randomGenerator;
+	public ArrayList<String> moovesAvailable;
+	public final int NB_PLAYERS = 3;
 	
 	public BoucleJeu(ApacheRest r, String p) {
 		this.rest = r;
 		this.id_partie = p;
-		gson = new Gson();  
+		gson = new Gson();
+		this.randomGenerator = new Random();
+		moovesAvailable = new ArrayList<String>();
+		moovesAvailable.add("ATTACK");
+		moovesAvailable.add("DEFEND");
+		moovesAvailable.add("YELL");
+		moovesAvailable.add("PROTECT");
+		moovesAvailable.add("HEAL");
+
 		
 		while(!GetStatut()) {
 			if(!canPlay) {
@@ -104,7 +116,8 @@ public class BoucleJeu {
 		}
 		else if (board.playerBoards[0].fighters.length == 3){
 			System.out.println("Set des actions des personnages");
-			Action_personnage();
+			//Action_personnage();
+			stratAnasse();
 		}
 		else {
 			System.out.println("ERREUR : PLAY, LONGUEUR FIGHTERS");
@@ -132,20 +145,80 @@ public class BoucleJeu {
 	public void Action_personnage() {
 		String action = "";
 		for(int i = 0; i < 3; i++) {
-			Random r = new Random();
-			int  j = r.nextInt(3);
-			while(this.board.playerBoards[1].fighters[j].isDead) { j = r.nextInt(3);}
+			int  j = randomGenerator.nextInt(3);
+			while(this.board.playerBoards[1].fighters[j].isDead) {
+				j = randomGenerator.nextInt(3);
+			}
+			
 			action += "A" + Integer.toString(i+1) + ",ATTACK,E" + Integer.toString(j+1);
-					
-				
+			if(i != 2) {
+				action += "$";
+			}
+		}
+		
+		System.out.println("Coup : " + action);
+		String retour = rest.Joue_Coup(this.id_partie, action);
+		Analyse_Joue_Coup(retour);
+	}
+	
+	public void stratAnasse() {
+		String action = "";
+		
+		// chaque itération correspond à un tours de l'un de nos 3 personnages
+		for(int i = 0; i < NB_PLAYERS; i++) {
+			EpicHero currentPlayer = this.board.playerBoards[0].fighters[i];
+			int currentPlayerNumber = i+1;
+			//int  targetNumber = randomGenerator.nextInt(NB_PLAYERS) +1;
+			int targetNumber = selectFirstBotAlive(this.board.playerBoards[1].fighters);
+			
+			// Si pas de Mana : On attaque
+			if (currentPlayer.currentMana == 0) {
+				action += currentPlayer.attack(currentPlayerNumber, targetNumber);
+			} else {
+				// Sinon stratégie différente selon la classe
+				switch (currentPlayerNumber) {
+				// L'ogre
+				case 1:
+					if(currentPlayer.currentLife > currentPlayer.maxAvailableLife*0.9 ) {
+						action += currentPlayer.yell(currentPlayerNumber, targetNumber);
+					} else {
+						action += currentPlayer.attack(currentPlayerNumber, targetNumber);
+					}
+					break;
+				case 2: // Le garde
+					if(currentPlayer.currentLife > currentPlayer.maxAvailableLife*0.7 ) {
+						action += currentPlayer.attack(currentPlayerNumber, targetNumber);
+					} else {
+						action += currentPlayer.protectHimself(currentPlayerNumber);
+					}
+					break;
+				case 3: // Le prête
+					action += currentPlayer.healFighter(currentPlayerNumber, targetNumber, this.board.playerBoards[0].fighters);
+					break;
+				default:
+					break;
+				}
+			}
+			
 			
 			if(i != 2) {
 				action += "$";
 			}
 		}
-		System.out.println("Coup : " + action);
+		
+		System.out.println("Coup total du tours: " + action);
 		String retour = rest.Joue_Coup(this.id_partie, action);
 		Analyse_Joue_Coup(retour);
+	}
+	
+	public int selectFirstBotAlive(EpicHero[] enemies) {
+		for(int i = 0; i < enemies.length; i++) {
+			if (!enemies[i].isDead) {
+				return i+1;
+			}
+		}
+		
+		return 1;
 	}
 	
 	public void Analyse_Joue_Coup(String s) {
