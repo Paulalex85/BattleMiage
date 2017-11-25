@@ -1,5 +1,7 @@
 package Battle.BattleMiage;
 
+import java.util.Random;
+
 import com.google.gson.Gson;
 
 public class BoucleJeu {
@@ -72,9 +74,8 @@ public class BoucleJeu {
 		for(int i = 0; i<2;i++){
 			for (int j = 0; j<3; j++)
 			{
-				System.out.println("i:"+i+", j:"+j);
 				
-				if(board.playerBoards[i].fighters != null || board.playerBoards[i].fighters[j]!= null){
+				if(board.playerBoards[i].fighters != null && board.playerBoards[i].fighters.length > 2){
 					//System.out.println(board.playerBoards[i].fighters[j].fighterClass);
 					System.out.println("--------------------------------------------------");
 					System.out.println("Team : "+board.playerBoards[i].playerName);
@@ -82,7 +83,7 @@ public class BoucleJeu {
 					System.out.println("Vie : "+board.playerBoards[i].fighters[j].currentLife);
 					System.out.println("Mana : "+board.playerBoards[i].fighters[j].currentMana);
 					System.out.println("Status : "+board.playerBoards[i].fighters[j].states);
-					System.out.println("--------------------------------------------------");
+					System.out.println("");
 				}
 			}
 		}
@@ -91,8 +92,8 @@ public class BoucleJeu {
 		String plateau = rest.Plateau_jeu(id_partie);
 		
 		board = gson.fromJson(plateau, Board.class);
-		//if(board != null)
-		//afficherBoard(board);
+		if(board != null)
+		afficherBoard(board);
 	}
 	
 	public void Play() {
@@ -131,12 +132,13 @@ public class BoucleJeu {
 	public void Action_personnage() {
 		String action = "";
 		for(int i = 0; i < 3; i++) {
-			for(int j = 0 ; j < 3 ; j++) {
-				if(!this.board.playerBoards[1].fighters[j].isDead) {
-					action += "A" + Integer.toString(i+1) + ",ATTACK,E" + Integer.toString(j+1);
-					break;
-				}
-			}
+			Random r = new Random();
+			int  j = r.nextInt(3);
+			while(this.board.playerBoards[1].fighters[j].isDead) { j = r.nextInt(3);}
+			action += "A" + Integer.toString(i+1) + ",ATTACK,E" + Integer.toString(j+1);
+					
+				
+			
 			if(i != 2) {
 				action += "$";
 			}
