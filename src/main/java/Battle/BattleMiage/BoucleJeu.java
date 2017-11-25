@@ -1,6 +1,5 @@
 package Battle.BattleMiage;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import com.google.gson.Gson;
@@ -13,7 +12,6 @@ public class BoucleJeu {
 	Board board;
 	Gson gson;
 	private Random randomGenerator;
-	public ArrayList<String> moovesAvailable;
 	public final int NB_PLAYERS = 3;
 	
 	public BoucleJeu(ApacheRest r, String p) {
@@ -21,13 +19,6 @@ public class BoucleJeu {
 		this.id_partie = p;
 		gson = new Gson();
 		this.randomGenerator = new Random();
-		moovesAvailable = new ArrayList<String>();
-		moovesAvailable.add("ATTACK");
-		moovesAvailable.add("DEFEND");
-		moovesAvailable.add("YELL");
-		moovesAvailable.add("PROTECT");
-		moovesAvailable.add("HEAL");
-
 		
 		while(!GetStatut()) {
 			if(!canPlay) {
