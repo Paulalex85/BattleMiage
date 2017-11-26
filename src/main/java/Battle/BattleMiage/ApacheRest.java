@@ -9,6 +9,7 @@ import com.sun.jersey.api.client.WebResource;
 
 public class ApacheRest {
 	
+	//3f15c81f-7ccf-41e1-981d-f72197be7361
 	final String nomEquipe = "Les%20Lions%20Sots";
 	final String mdpEquipe = "HakunaMatataMaisQuellePhraseMagnifique";
 	String url = "";

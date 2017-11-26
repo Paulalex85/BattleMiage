@@ -14,11 +14,14 @@ public class BoucleJeu {
 	private Random randomGenerator;
 	public final int NB_PLAYERS = 3;
 	
+	StratDeLaMorKiTu strat_paul;
+	
 	public BoucleJeu(ApacheRest r, String p) {
 		this.rest = r;
 		this.id_partie = p;
 		gson = new Gson();
 		this.randomGenerator = new Random();
+		strat_paul = new StratDeLaMorKiTu();
 		
 		while(!GetStatut()) {
 			if(!canPlay) {
@@ -107,8 +110,9 @@ public class BoucleJeu {
 		}
 		else if (board.playerBoards[0].fighters.length == 3){
 			System.out.println("Set des actions des personnages");
-			//Action_personnage();
-			stratAnasse();
+			Action_personnage();
+			//stratAnasse();
+			
 		}
 		else {
 			System.out.println("ERREUR : PLAY, LONGUEUR FIGHTERS");
@@ -124,8 +128,8 @@ public class BoucleJeu {
 		}
 		String retour = "";
 		switch(current_nb) {
-			case 0 : retour = rest.Joue_Coup(this.id_partie, "ORC"); System.out.println("Choisi Orc");break;
-			case 1 : retour = rest.Joue_Coup(this.id_partie, "GUARD");System.out.println("Choisi Guard");break;
+			case 0 : retour = rest.Joue_Coup(this.id_partie, "GUARD"); System.out.println("Choisi Orc");break;
+			case 1 : retour = rest.Joue_Coup(this.id_partie, "ORC");System.out.println("Choisi Guard");break;
 			case 2 : retour = rest.Joue_Coup(this.id_partie, "PRIEST");System.out.println("Choisi Priest");break;
 			default : retour = rest.Joue_Coup(this.id_partie, "ORC");System.out.println("Choisis Orc");
 		}
@@ -134,6 +138,16 @@ public class BoucleJeu {
 	}
 	
 	public void Action_personnage() {
+		String action = "";
+		action = strat_paul.Action_Joueur(this.board);
+		
+		
+		System.out.println("Coup : " + action);
+		String retour = rest.Joue_Coup(this.id_partie, action);
+		Analyse_Joue_Coup(retour);
+	}
+	
+	public String startQuentin() {
 		String action = "";
 		for(int i = 0; i < 3; i++) {
 			int  j = randomGenerator.nextInt(3);
@@ -147,9 +161,7 @@ public class BoucleJeu {
 			}
 		}
 		
-		System.out.println("Coup : " + action);
-		String retour = rest.Joue_Coup(this.id_partie, action);
-		Analyse_Joue_Coup(retour);
+		return action;
 	}
 	
 	public void stratAnasse() {
