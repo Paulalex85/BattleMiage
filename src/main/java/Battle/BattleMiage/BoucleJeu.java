@@ -13,15 +13,17 @@ public class BoucleJeu {
 	Gson gson;
 	private Random randomGenerator;
 	public final int NB_PLAYERS = 3;
+	int lvl_bot;
 	
 	StratDeLaMorKiTu strat_paul;
 	
-	public BoucleJeu(ApacheRest r, String p) {
+	public BoucleJeu(ApacheRest r, String p, int lvl_bot) {
 		this.rest = r;
 		this.id_partie = p;
+		this.lvl_bot = lvl_bot;
 		gson = new Gson();
 		this.randomGenerator = new Random();
-		strat_paul = new StratDeLaMorKiTu();
+		strat_paul = new StratDeLaMorKiTu( this.lvl_bot);
 		
 		while(!GetStatut()) {
 			if(!canPlay) {

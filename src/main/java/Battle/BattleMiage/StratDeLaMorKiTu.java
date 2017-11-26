@@ -5,10 +5,12 @@ public class StratDeLaMorKiTu {
 	Board board;
 	int index_tour;
 	int index_cible;
+	int lvl_bot;
 	
-	public StratDeLaMorKiTu() {
+	public StratDeLaMorKiTu(int lvl_bot) {
 		index_tour = 0;
 		index_cible = -1;
+		this.lvl_bot = lvl_bot;
 	}
 	
 	//tour 0 ils attendent pour avoir 2 pa ou si le guard et le pretre ont 2 alors ils les utilisent 
@@ -19,34 +21,47 @@ public class StratDeLaMorKiTu {
 	public String Action_Joueur(Board board) {
 		this.board = board;
 		String action = "";
+
+		//ENNEMIES
+		int index_orc, index_priest, index_guard;
+		index_orc = getIndexClassAdversaire("ORC");
+		index_priest = getIndexClassAdversaire("PRIEST");
+		index_guard = getIndexClassAdversaire("GUARD");
 		
-		//DETERMINE TARGET
-		boolean get_target = false;
-		for(int i = 0; i < 3; i++) {
-			if(!board.playerBoards[1].fighters[i].isDead && board.playerBoards[1].fighters[i].fighterClass.equals("ORC")) {
-				index_cible = i+1;
-				get_target = true;
-				break;
+		// bot 1 a 3
+		if(lvl_bot >= 1 && lvl_bot <= 3) {
+			if( !board.playerBoards[1].fighters[index_guard].isDead) {
+				index_cible = index_guard +1;
+			} else if(!board.playerBoards[1].fighters[index_orc].isDead) {
+				index_cible = index_orc +1;
+			}
+			else {
+				index_cible = index_priest +1;
 			}
 		}
-		if(!get_target) {
-			for(int i = 0; i < 3; i++) {
-				if(!board.playerBoards[1].fighters[i].isDead && board.playerBoards[1].fighters[i].fighterClass.equals("PRIEST")) {
-					index_cible = i+1;
-					get_target = true;
-					break;
+		else { // 4 et 5, marche pas 
+			if(index_guard +1 == index_cible) {
+				if(!board.playerBoards[1].fighters[index_orc].isDead) {
+					index_cible = index_orc +1;
+				} else if (!board.playerBoards[1].fighters[index_priest].isDead) {
+					index_cible = index_priest +1;
+				} else {
+					index_cible = index_guard +1;
+				}
+			}
+			else {
+				if(!board.playerBoards[1].fighters[index_guard].isDead ) {
+					index_cible = index_guard +1;
+				}
+				else {
+					index_cible = index_orc +1;
 				}
 			}
 		}
-		if(!get_target) {
-			for(int i = 0; i < 3; i++) {
-				if(!board.playerBoards[1].fighters[i].isDead && board.playerBoards[1].fighters[i].fighterClass.equals("GUARD")) {
-					index_cible = i+1;
-					get_target = true;
-					break;
-				}
-			}
-		}
+		
+		
+		
+		
 		
 		//FAIT LA STRAT
 		if(index_tour == 0) {
@@ -136,5 +151,14 @@ public class StratDeLaMorKiTu {
 
 
 		return action;
+	}
+	
+	public int getIndexClassAdversaire(String nom_classe) {
+		for(int i = 0; i < 3; i++) {
+			if(board.playerBoards[1].fighters[i].fighterClass.equals(nom_classe)) {
+				return index_cible = i;
+			}
+		}
+		return 0;
 	}
 }

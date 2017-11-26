@@ -11,7 +11,7 @@ public class NewGame {
 		
 		//TODO gerer si vs joueur ou vs bot avec param
 		id_partie = rest.Init_versus_bot(difficulte);
-		BoucleJeu boucle = new BoucleJeu(rest, id_partie);
+		BoucleJeu boucle = new BoucleJeu(rest, id_partie, Integer.parseInt(difficulte));
 	}
 	
 	public NewGame(Param tests) { // vs team 
