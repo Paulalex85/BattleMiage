@@ -9,7 +9,7 @@ import com.sun.jersey.api.client.WebResource;
 
 public class ApacheRest {
 	
-	//3f15c81f-7ccf-41e1-981d-f72197be7361
+	//2b366c11-21d9-4a26-be07-2a744aa9b4f4
 	final String nomEquipe = "Les%20Lions%20Sots";
 	final String mdpEquipe = "HakunaMatataMaisQuellePhraseMagnifique";
 	String url = "";
@@ -53,6 +53,7 @@ public class ApacheRest {
 		args.add(mdpEquipe);
 		
 		this.id = Request_GET(args);
+		System.out.println(this.id);
 	}
 	
 	/***
