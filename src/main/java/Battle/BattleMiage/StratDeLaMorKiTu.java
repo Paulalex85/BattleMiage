@@ -21,26 +21,6 @@ public class StratDeLaMorKiTu {
 		int index_2 = -1;
 		int index_3 = -1; // définit l'ordre
 		
-		if(getIndexClassAdversaire("PRIEST") != -1 && index_3 == -1) {
-			if( index_1 == -1 ) {
-				index_1 = getIndexClassAdversaire("PRIEST");
-			}else if(index_2 == -1) {
-				index_2 = getIndexClassAdversaire("PRIEST");
-			}
-			else {
-				index_3= getIndexClassAdversaire("PRIEST");
-			}
-		}
-		if(getIndexClassAdversaire("ORC") != -1 && index_3 == -1) {
-			if( index_1 == -1 ) {
-				index_1 = getIndexClassAdversaire("ORC");
-			}else if(index_2 == -1) {
-				index_2 = getIndexClassAdversaire("ORC");
-			}
-			else {
-				index_3= getIndexClassAdversaire("ORC");
-			}
-		}
 		if(getIndexClassAdversaire("ARCHER") != -1 && index_3 == -1) {
 			if( index_1 == -1 ) {
 				index_1 = getIndexClassAdversaire("ARCHER");
@@ -51,14 +31,14 @@ public class StratDeLaMorKiTu {
 				index_3= getIndexClassAdversaire("ARCHER");
 			}
 		}
-		if(getIndexClassAdversaire("CHAMAN") != -1 && index_3 == -1) {
+		if(getIndexClassAdversaire("GUARD") != -1 && index_3 == -1) {
 			if( index_1 == -1 ) {
-				index_1 = getIndexClassAdversaire("CHAMAN");
+				index_1 = getIndexClassAdversaire("GUARD");
 			}else if(index_2 == -1) {
-				index_2 = getIndexClassAdversaire("CHAMAN");
+				index_2 = getIndexClassAdversaire("GUARD");
 			}
 			else {
-				index_3= getIndexClassAdversaire("CHAMAN");
+				index_3= getIndexClassAdversaire("GUARD");
 			}
 		}
 		if(getIndexClassAdversaire("PALADIN") != -1 && index_3 == -1) {
@@ -71,14 +51,34 @@ public class StratDeLaMorKiTu {
 				index_3= getIndexClassAdversaire("PALADIN");
 			}
 		}
-		if(getIndexClassAdversaire("GUARD") != -1 && index_3 == -1) {
+		if(getIndexClassAdversaire("CHAMAN") != -1 && index_3 == -1) {
 			if( index_1 == -1 ) {
-				index_1 = getIndexClassAdversaire("GUARD");
+				index_1 = getIndexClassAdversaire("CHAMAN");
 			}else if(index_2 == -1) {
-				index_2 = getIndexClassAdversaire("GUARD");
+				index_2 = getIndexClassAdversaire("CHAMAN");
 			}
 			else {
-				index_3= getIndexClassAdversaire("GUARD");
+				index_3= getIndexClassAdversaire("CHAMAN");
+			}
+		}
+		if(getIndexClassAdversaire("ORC") != -1 && index_3 == -1) {
+			if( index_1 == -1 ) {
+				index_1 = getIndexClassAdversaire("ORC");
+			}else if(index_2 == -1) {
+				index_2 = getIndexClassAdversaire("ORC");
+			}
+			else {
+				index_3= getIndexClassAdversaire("ORC");
+			}
+		}
+		if(getIndexClassAdversaire("PRIEST") != -1 && index_3 == -1) {
+			if( index_1 == -1 ) {
+				index_1 = getIndexClassAdversaire("PRIEST");
+			}else if(index_2 == -1) {
+				index_2 = getIndexClassAdversaire("PRIEST");
+			}
+			else {
+				index_3= getIndexClassAdversaire("PRIEST");
 			}
 		}
 		
@@ -94,49 +94,136 @@ public class StratDeLaMorKiTu {
 		
 		if(index_tour == 0) {
 			
-			if(board.playerBoards[0].fighters[1].isDead && 
-					board.playerBoards[0].fighters[2].isDead && 
-					board.playerBoards[0].fighters[0].currentMana >=1){
-				index_tour++;
-				
+			if(board.playerBoards[0].fighters[2].isDead) {
+				action = "A1,ATTACK,E" + Integer.toString(index_cible) +
+						"$A2,ATTACK,E" + Integer.toString(index_cible) +
+						"$A3,ATTACK,E" + Integer.toString(index_cible);
 			}
+			else {
 			
-			if(board.playerBoards[0].fighters[1].currentMana >= 1) {  // l'orc
-				index_tour++;
+				if(board.playerBoards[0].fighters[1].isDead && 
+						board.playerBoards[0].fighters[2].isDead && 
+						board.playerBoards[0].fighters[0].currentMana >=1){
+					index_tour++;
+					
+				}
+				
+				if(board.playerBoards[0].fighters[1].currentMana >= 1) {  // l'orc
+					index_tour++;
+				}
+				
+				boolean scared1 = false;
+				if(board.playerBoards[0].fighters[0].states != null) {
+					for(int i = 0 ; i <  board.playerBoards[0].fighters[0].states.size() ; i++ ) {
+						if(board.playerBoards[0].fighters[0].states.get(i).type.equals("SCARED")){
+							action += "A1,DEFEND,A1";
+							scared1 = true;
+							break;
+						}
+					}
+				}
+				
+				if(!scared1) {
+					action = "A1,REST,A1";
+				}
+				
+				boolean scared2 = false;
+				if(board.playerBoards[0].fighters[1].states != null) {
+					for(int i = 0 ; i <  board.playerBoards[0].fighters[1].states.size() ; i++ ) {
+						if(board.playerBoards[0].fighters[1].states.get(i).type.equals("SCARED")){
+							action += "$A2,DEFEND,A2";
+							scared2 = true;
+							break;
+						}
+					}
+				}
+				
+				if(!scared2) {
+					action += "$A2,REST,A2";
+				}
+				
+				boolean scared3 = false;
+				if(board.playerBoards[0].fighters[2].states != null) {
+					for(int i = 0 ; i <  board.playerBoards[0].fighters[2].states.size() ; i++ ) {
+						if(board.playerBoards[0].fighters[2].states.get(i).type.equals("SCARED")){
+							action += "$A3,DEFEND,A3";
+							scared3 = true;
+							break;
+						}
+					}
+				}
+				
+				if(!scared3) {
+					if(board.playerBoards[0].fighters[2].currentMana >=2) {
+						int min = 99999;
+						int index_jambon = 0;
+						for (int i = 0; i < 3; i++) {
+							if(!board.playerBoards[1].fighters[i].isDead && min > board.playerBoards[1].fighters[i].currentLife) {
+								min = board.playerBoards[1].fighters[i].currentLife;
+								index_jambon = i;
+							}
+						}
+						
+						action += "$A3,FIREBOLT,E"+ Integer.toString(index_jambon +1);
+					}
+					else {
+						if(board.playerBoards[0].fighters[2].currentLife < 10) {
+							action += "$A3,ATTACK,E" + Integer.toString(index_cible); 
+						}
+						else
+						{
+							action += "$A3,REST,A3";
+						}
+					}
+				}
 			}
+		
+		}else if (index_tour == 1) { // paladin , orc, archer
 			
 			boolean scared1 = false;
-			for(int i = 0 ; i <  board.playerBoards[0].fighters[0].states.size() ; i++ ) {
-				if(board.playerBoards[0].fighters[0].states.get(i).type.equals("SCARED")){
-					action += "A1,DEFEND,A1";
-					scared1 = true;
-					break;
+			if(board.playerBoards[0].fighters[0].states != null) {
+				for(int i = 0 ; i <  board.playerBoards[0].fighters[0].states.size() ; i++ ) {
+					if(board.playerBoards[0].fighters[0].states.get(i).type.equals("SCARED")){
+						action += "A1,DEFEND,A1";
+						scared1 = true;
+						break;
+					}
 				}
 			}
 			
 			if(!scared1) {
-				action = "A1,REST,A1";
+				if(board.playerBoards[0].fighters[0].currentMana >=2) {
+					action = "A1,CHARGE,E" + Integer.toString(index_cible);
+				}
+				else {
+					action = "A1,ATTACK,E" + Integer.toString(index_cible);
+				}
 			}
 			
+			
 			boolean scared2 = false;
-			for(int i = 0 ; i <  board.playerBoards[0].fighters[1].states.size() ; i++ ) {
-				if(board.playerBoards[0].fighters[1].states.get(i).type.equals("SCARED")){
-					action += "$A2,DEFEND,A2";
-					scared2 = true;
-					break;
+			if(board.playerBoards[0].fighters[1].states != null) {
+				for(int i = 0 ; i <  board.playerBoards[0].fighters[1].states.size() ; i++ ) {
+					if(board.playerBoards[0].fighters[1].states.get(i).type.equals("SCARED")){
+						action += "$A2,DEFEND,A2";
+						scared2 = true;
+						break;
+					}
 				}
 			}
 			
 			if(!scared2) {
-				action += "$A2,REST,A2";
+				action += "$A2,YELL,E" + Integer.toString(index_cible);
 			}
 			
 			boolean scared3 = false;
-			for(int i = 0 ; i <  board.playerBoards[0].fighters[2].states.size() ; i++ ) {
-				if(board.playerBoards[0].fighters[2].states.get(i).type.equals("SCARED")){
-					action += "$A3,DEFEND,A3";
-					scared3 = true;
-					break;
+			if(board.playerBoards[0].fighters[2].states != null) {
+				for(int i = 0 ; i <  board.playerBoards[0].fighters[2].states.size() ; i++ ) {
+					if(board.playerBoards[0].fighters[2].states.get(i).type.equals("SCARED")){
+						action += "$A3,DEFEND,A3";
+						scared3 = true;
+						break;
+					}
 				}
 			}
 			
@@ -154,19 +241,20 @@ public class StratDeLaMorKiTu {
 					action += "$A3,FIREBOLT,E"+ Integer.toString(index_jambon +1);
 				}
 				else {
-					action += "$A3,REST,A3";
+					action += "$A3,ATTACK,E" + Integer.toString(index_cible);
 				}
 			}
-			
-		
-		}else if (index_tour == 1) { // paladin , orc, archer
-			
+			index_tour++;
+		}
+		else { // paladin , orc, archer			
 			boolean scared1 = false;
-			for(int i = 0 ; i <  board.playerBoards[0].fighters[0].states.size() ; i++ ) {
-				if(board.playerBoards[0].fighters[0].states.get(i).type.equals("SCARED")){
-					action += "A1,DEFEND,A1";
-					scared1 = true;
-					break;
+			if(board.playerBoards[0].fighters[0].states != null) {
+				for(int i = 0 ; i <  board.playerBoards[0].fighters[0].states.size() ; i++ ) {
+					if(board.playerBoards[0].fighters[0].states.get(i).type.equals("SCARED")){
+						action += "A1,DEFEND,A1";
+						scared1 = true;
+						break;
+					}
 				}
 			}
 			
@@ -175,55 +263,35 @@ public class StratDeLaMorKiTu {
 			}
 			
 			boolean scared2 = false;
-			for(int i = 0 ; i <  board.playerBoards[0].fighters[1].states.size() ; i++ ) {
-				if(board.playerBoards[0].fighters[1].states.get(i).type.equals("SCARED")){
-					action += "$A2,DEFEND,A2";
-					scared2 = true;
-					break;
+			if(board.playerBoards[0].fighters[1].states != null) {
+				for(int i = 0 ; i <  board.playerBoards[0].fighters[1].states.size() ; i++ ) {
+					if(board.playerBoards[0].fighters[1].states.get(i).type.equals("SCARED")){
+						action += "$A2,DEFEND,A2";
+						scared2 = true;
+						break;
+					}
 				}
 			}
 			
 			if(!scared2) {
-				action += "$A2,YELL,E" + Integer.toString(index_cible);
+				action += "$A2,ATTACK,E" + Integer.toString(index_cible);
 			}
 			
 			boolean scared3 = false;
-			for(int i = 0 ; i <  board.playerBoards[0].fighters[2].states.size() ; i++ ) {
-				if(board.playerBoards[0].fighters[2].states.get(i).type.equals("SCARED")){
-					action += "$A3,DEFEND,A3";
-					scared3 = true;
-					break;
+			if(board.playerBoards[0].fighters[2].states != null) {
+				for(int i = 0 ; i <  board.playerBoards[0].fighters[2].states.size() ; i++ ) {
+					if(board.playerBoards[0].fighters[2].states.get(i).type.equals("SCARED")){
+						action += "$A3,DEFEND,A3";
+						scared3 = true;
+						break;
+					}
 				}
 			}
 			
 			if(!scared3) {
 				action += "$A3,ATTACK,E" + Integer.toString(index_cible);
 			}
-			index_tour++;
-		}
-		else { // paladin , orc, archer
-			String action_paladin = "";
-			int guard_ennemy = getIndexClassAdversaire("GUARD");
-			int chaman_ennemy = getIndexClassAdversaire("CHAMAN");
-			if(board.playerBoards[0].fighters[0].currentMana >=2) {
-				if(guard_ennemy != -1 && !board.playerBoards[1].fighters[guard_ennemy].isDead) {
-					action_paladin = "A1,CHARGE,E" + Integer.toString(guard_ennemy +1);
-				} else if(chaman_ennemy != -1 && !board.playerBoards[1].fighters[chaman_ennemy].isDead) {
-					action_paladin = "A1,CHARGE,E" + Integer.toString(chaman_ennemy +1);
-				}
-				else {
-					action_paladin = "A1,CHARGE,E" + Integer.toString(index_cible);
-				}
-			}
-			else {
-				action_paladin = "A1,ATTACK,E" + Integer.toString(index_cible);
-			}
 			
-			
-			
-			action = action_paladin + 
-					"$A2,ATTACK,E" + Integer.toString(index_cible) + 
-					"$A3,ATTACK,E" + Integer.toString(index_cible);
 			index_tour = 0;
 		}
 		
