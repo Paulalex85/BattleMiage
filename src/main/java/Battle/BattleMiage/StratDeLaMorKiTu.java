@@ -89,15 +89,29 @@ public class StratDeLaMorKiTu {
 			index_cible = index_2 +1;
 		}else {
 			index_cible= index_3 +1;
-		} 
-		
+		} 		
 		
 		if(index_tour == 0) {
 			
 			if(board.playerBoards[0].fighters[2].isDead) {
-				action = "A1,ATTACK,E" + Integer.toString(index_cible) +
-						"$A2,ATTACK,E" + Integer.toString(index_cible) +
-						"$A3,ATTACK,E" + Integer.toString(index_cible);
+				
+				if(board.playerBoards[0].fighters[0].currentMana == 0) {
+					action = "A1,REST,A1";
+				}else {
+					action = "A1,DEFEND,E" + Integer.toString(index_cible);
+				}
+				
+				if(board.playerBoards[0].fighters[1].currentMana == 0) {
+					action += "$A2,REST,A2";
+				}else {
+					action += "$A2,ATTACK,E" + Integer.toString(index_cible);
+				}
+				
+				if(board.playerBoards[0].fighters[2].currentMana == 0) {
+					action += "$A3,REST,A3";
+				}else {
+					action += "$A3,ATTACK,E" + Integer.toString(index_cible);
+				}
 			}
 			else {
 			
@@ -107,15 +121,20 @@ public class StratDeLaMorKiTu {
 					index_tour++;
 					
 				}
-				
-				if(board.playerBoards[0].fighters[1].currentMana >= 1) {  // l'orc
+				else if(board.playerBoards[0].fighters[1].currentMana >= 1) {  // l'orc
 					index_tour++;
 				}
 				
 				boolean scared1 = false;
 				if(board.playerBoards[0].fighters[0].states != null) {
 					for(int i = 0 ; i <  board.playerBoards[0].fighters[0].states.size() ; i++ ) {
-						if(board.playerBoards[0].fighters[0].states.get(i).type.equals("SCARED")){
+						if(board.playerBoards[0].fighters[0].states.get(i).type.equals("STUNNED") 
+								&& board.playerBoards[0].fighters[0].currentMana <= 1 ){
+							action += "A1,REST,A1";
+							scared1 = true;
+							break;
+						}
+						else if(board.playerBoards[0].fighters[0].states.get(i).type.equals("SCARED")){
 							action += "A1,DEFEND,A1";
 							scared1 = true;
 							break;
@@ -130,7 +149,13 @@ public class StratDeLaMorKiTu {
 				boolean scared2 = false;
 				if(board.playerBoards[0].fighters[1].states != null) {
 					for(int i = 0 ; i <  board.playerBoards[0].fighters[1].states.size() ; i++ ) {
-						if(board.playerBoards[0].fighters[1].states.get(i).type.equals("SCARED")){
+						if(board.playerBoards[0].fighters[1].states.get(i).type.equals("STUNNED")
+								&& board.playerBoards[0].fighters[1].currentMana <= 1){
+							action += "$A2,REST,A2";
+							scared2 = true;
+							break;
+						}
+						else if(board.playerBoards[0].fighters[1].states.get(i).type.equals("SCARED")){
 							action += "$A2,DEFEND,A2";
 							scared2 = true;
 							break;
@@ -145,7 +170,13 @@ public class StratDeLaMorKiTu {
 				boolean scared3 = false;
 				if(board.playerBoards[0].fighters[2].states != null) {
 					for(int i = 0 ; i <  board.playerBoards[0].fighters[2].states.size() ; i++ ) {
-						if(board.playerBoards[0].fighters[2].states.get(i).type.equals("SCARED")){
+						if(board.playerBoards[0].fighters[2].states.get(i).type.equals("STUNNED")
+								&& board.playerBoards[0].fighters[2].currentMana <= 1){
+							action += "$A3,REST,A3";
+							scared3 = true;
+							break;
+						}
+						else if(board.playerBoards[0].fighters[2].states.get(i).type.equals("SCARED")){
 							action += "$A3,DEFEND,A3";
 							scared3 = true;
 							break;
@@ -183,7 +214,13 @@ public class StratDeLaMorKiTu {
 			boolean scared1 = false;
 			if(board.playerBoards[0].fighters[0].states != null) {
 				for(int i = 0 ; i <  board.playerBoards[0].fighters[0].states.size() ; i++ ) {
-					if(board.playerBoards[0].fighters[0].states.get(i).type.equals("SCARED")){
+					if(board.playerBoards[0].fighters[0].states.get(i).type.equals("STUNNED")
+							&& board.playerBoards[0].fighters[0].currentMana <= 1 ){
+						action += "A1,REST,A1";
+						scared1 = true;
+						break;
+					}
+					else if(board.playerBoards[0].fighters[0].states.get(i).type.equals("SCARED")){
 						action += "A1,DEFEND,A1";
 						scared1 = true;
 						break;
@@ -204,7 +241,13 @@ public class StratDeLaMorKiTu {
 			boolean scared2 = false;
 			if(board.playerBoards[0].fighters[1].states != null) {
 				for(int i = 0 ; i <  board.playerBoards[0].fighters[1].states.size() ; i++ ) {
-					if(board.playerBoards[0].fighters[1].states.get(i).type.equals("SCARED")){
+					if(board.playerBoards[0].fighters[1].states.get(i).type.equals("STUNNED")
+							&& board.playerBoards[0].fighters[1].currentMana <= 1){
+						action += "$A2,REST,A2";
+						scared2 = true;
+						break;
+					}
+					else if(board.playerBoards[0].fighters[1].states.get(i).type.equals("SCARED")){
 						action += "$A2,DEFEND,A2";
 						scared2 = true;
 						break;
@@ -219,7 +262,13 @@ public class StratDeLaMorKiTu {
 			boolean scared3 = false;
 			if(board.playerBoards[0].fighters[2].states != null) {
 				for(int i = 0 ; i <  board.playerBoards[0].fighters[2].states.size() ; i++ ) {
-					if(board.playerBoards[0].fighters[2].states.get(i).type.equals("SCARED")){
+					if(board.playerBoards[0].fighters[2].states.get(i).type.equals("STUNNED")
+							&& board.playerBoards[0].fighters[2].currentMana <= 1){
+						action += "$A3,REST,A3";
+						scared3 = true;
+						break;
+					}
+					else if(board.playerBoards[0].fighters[2].states.get(i).type.equals("SCARED")){
 						action += "$A3,DEFEND,A3";
 						scared3 = true;
 						break;
@@ -250,7 +299,13 @@ public class StratDeLaMorKiTu {
 			boolean scared1 = false;
 			if(board.playerBoards[0].fighters[0].states != null) {
 				for(int i = 0 ; i <  board.playerBoards[0].fighters[0].states.size() ; i++ ) {
-					if(board.playerBoards[0].fighters[0].states.get(i).type.equals("SCARED")){
+					if(board.playerBoards[0].fighters[0].states.get(i).type.equals("STUNNED") 
+							&& board.playerBoards[0].fighters[0].currentMana <= 1 ){
+						action += "A1,REST,A1";
+						scared1 = true;
+						break;
+					}
+					else if(board.playerBoards[0].fighters[0].states.get(i).type.equals("SCARED")){
 						action += "A1,DEFEND,A1";
 						scared1 = true;
 						break;
@@ -265,7 +320,13 @@ public class StratDeLaMorKiTu {
 			boolean scared2 = false;
 			if(board.playerBoards[0].fighters[1].states != null) {
 				for(int i = 0 ; i <  board.playerBoards[0].fighters[1].states.size() ; i++ ) {
-					if(board.playerBoards[0].fighters[1].states.get(i).type.equals("SCARED")){
+					if(board.playerBoards[0].fighters[1].states.get(i).type.equals("STUNNED")
+							&& board.playerBoards[0].fighters[1].currentMana <= 1 ){
+						action += "$A2,REST,A2";
+						scared2 = true;
+						break;
+					}
+					else if(board.playerBoards[0].fighters[1].states.get(i).type.equals("SCARED")){
 						action += "$A2,DEFEND,A2";
 						scared2 = true;
 						break;
@@ -280,7 +341,13 @@ public class StratDeLaMorKiTu {
 			boolean scared3 = false;
 			if(board.playerBoards[0].fighters[2].states != null) {
 				for(int i = 0 ; i <  board.playerBoards[0].fighters[2].states.size() ; i++ ) {
-					if(board.playerBoards[0].fighters[2].states.get(i).type.equals("SCARED")){
+					if(board.playerBoards[0].fighters[2].states.get(i).type.equals("STUNNED")
+							&& board.playerBoards[0].fighters[2].currentMana <= 1){
+						action += "$A3,REST,A3";
+						scared3 = true;
+						break;
+					}
+					else if(board.playerBoards[0].fighters[2].states.get(i).type.equals("SCARED")){
 						action += "$A3,DEFEND,A3";
 						scared3 = true;
 						break;
