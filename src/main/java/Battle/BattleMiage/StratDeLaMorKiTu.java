@@ -21,9 +21,24 @@ public class StratDeLaMorKiTu {
 		int index_2 = -1;
 		int index_3 = -1; // définit l'ordre
 		
+		if(getIndexClassAdversaire("PRIEST") != -1 && index_3 == -1) {
+			if( index_1 == -1 ) {
+				index_1 = getIndexClassAdversaire("PRIEST");
+			}else if(index_2 == -1) {
+				index_2 = getIndexClassAdversaire("PRIEST");
+			}
+			else {
+				index_3= getIndexClassAdversaire("PRIEST");
+			}
+		}
 		if(getIndexClassAdversaire("ORC") != -1 && index_3 == -1) {
 			if( index_1 == -1 ) {
 				index_1 = getIndexClassAdversaire("ORC");
+			}else if(index_2 == -1) {
+				index_2 = getIndexClassAdversaire("ORC");
+			}
+			else {
+				index_3= getIndexClassAdversaire("ORC");
 			}
 		}
 		if(getIndexClassAdversaire("ARCHER") != -1 && index_3 == -1) {
@@ -56,16 +71,6 @@ public class StratDeLaMorKiTu {
 				index_3= getIndexClassAdversaire("PALADIN");
 			}
 		}
-		if(getIndexClassAdversaire("PRIEST") != -1 && index_3 == -1) {
-			if( index_1 == -1 ) {
-				index_1 = getIndexClassAdversaire("PRIEST");
-			}else if(index_2 == -1) {
-				index_2 = getIndexClassAdversaire("PRIEST");
-			}
-			else {
-				index_3= getIndexClassAdversaire("PRIEST");
-			}
-		}
 		if(getIndexClassAdversaire("GUARD") != -1 && index_3 == -1) {
 			if( index_1 == -1 ) {
 				index_1 = getIndexClassAdversaire("GUARD");
@@ -77,17 +82,24 @@ public class StratDeLaMorKiTu {
 			}
 		}
 		
+		
 		if( !board.playerBoards[1].fighters[index_1].isDead) {
 			index_cible = index_1 +1;
 		} else if ( !board.playerBoards[1].fighters[index_2].isDead) {
 			index_cible = index_2 +1;
 		}else {
 			index_cible= index_3 +1;
-		}
+		} 
+		
 		
 		if(index_tour == 0) {
 			
-			
+			if(board.playerBoards[0].fighters[1].isDead && 
+					board.playerBoards[0].fighters[2].isDead && 
+					board.playerBoards[0].fighters[0].currentMana >=1){
+				index_tour++;
+				
+			}
 			
 			if(board.playerBoards[0].fighters[1].currentMana >= 1) {  // l'orc
 				index_tour++;
@@ -96,7 +108,7 @@ public class StratDeLaMorKiTu {
 			action = "A1,REST,A1$A2,REST,A2";
 			
 			if(board.playerBoards[0].fighters[2].currentMana >=2) {
-				int min = board.playerBoards[1].fighters[0].currentLife;
+				int min = 99999;
 				int index_jambon = 0;
 				for (int i = 0; i < 3; i++) {
 					if(!board.playerBoards[1].fighters[i].isDead && min > board.playerBoards[1].fighters[i].currentLife) {
@@ -291,9 +303,19 @@ public class StratDeLaMorKiTu {
 	public int getIndexClassAdversaire(String nom_classe) {
 		for(int i = 0; i < 3; i++) {
 			if(board.playerBoards[1].fighters[i].fighterClass.equals(nom_classe)) {
-				return index_cible = i;
+				return i;
 			}
 		}
+		return -1;
+	}
+	
+	public int selectFirstBotAlive(EpicHero[] enemies) {
+		for(int i = 0; i < enemies.length; i++) {
+			if (!enemies[i].isDead) {
+				return i+1;
+			}
+		}
+		
 		return -1;
 	}
 }
