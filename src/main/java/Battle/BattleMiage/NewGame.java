@@ -11,15 +11,16 @@ public class NewGame {
 		
 		//TODO gerer si vs joueur ou vs bot avec param
 		id_partie = rest.Init_versus_bot(difficulte);
-		BoucleJeu boucle = new BoucleJeu(rest, id_partie, Integer.parseInt(difficulte));
+		BoucleJeu boucle = new BoucleJeu(rest, id_partie);
 	}
 	
 	public NewGame(Param tests) { // vs team 
 		this.param = tests;
-		this.rest = new ApacheRest("http://prod.codeandplay.date/epic-ws/epic");
+		this.rest = new ApacheRest("http://challengemiage.codeandplay.date/epic-ws/epic");
 		
 		//TODO gerer si vs joueur ou vs bot avec param
 		id_partie = rest.Init_versus_joueur();
+		BoucleJeu boucle = new BoucleJeu(rest, id_partie);
 	}
 	
 	
