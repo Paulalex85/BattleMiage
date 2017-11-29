@@ -13,6 +13,141 @@ public class StratDeLaMorKiTu {
 		this.lvl_bot = lvl_bot;
 	}
 	
+	public String Action_bot_J(Board board) {
+		this.board = board;
+		String action = "";
+		
+		int index_1 = -1;
+		int index_2 = -1;
+		int index_3 = -1; // définit l'ordre
+		
+		if(getIndexClassAdversaire("ORC") != -1 && index_3 == -1) {
+			if( index_1 == -1 ) {
+				index_1 = getIndexClassAdversaire("ORC");
+			}
+		}
+		if(getIndexClassAdversaire("ARCHER") != -1 && index_3 == -1) {
+			if( index_1 == -1 ) {
+				index_1 = getIndexClassAdversaire("ARCHER");
+			}else if(index_2 == -1) {
+				index_2 = getIndexClassAdversaire("ARCHER");
+			}
+			else {
+				index_3= getIndexClassAdversaire("ARCHER");
+			}
+		}
+		if(getIndexClassAdversaire("CHAMAN") != -1 && index_3 == -1) {
+			if( index_1 == -1 ) {
+				index_1 = getIndexClassAdversaire("CHAMAN");
+			}else if(index_2 == -1) {
+				index_2 = getIndexClassAdversaire("CHAMAN");
+			}
+			else {
+				index_3= getIndexClassAdversaire("CHAMAN");
+			}
+		}
+		if(getIndexClassAdversaire("PALADIN") != -1 && index_3 == -1) {
+			if( index_1 == -1 ) {
+				index_1 = getIndexClassAdversaire("PALADIN");
+			}else if(index_2 == -1) {
+				index_2 = getIndexClassAdversaire("PALADIN");
+			}
+			else {
+				index_3= getIndexClassAdversaire("PALADIN");
+			}
+		}
+		if(getIndexClassAdversaire("PRIEST") != -1 && index_3 == -1) {
+			if( index_1 == -1 ) {
+				index_1 = getIndexClassAdversaire("PRIEST");
+			}else if(index_2 == -1) {
+				index_2 = getIndexClassAdversaire("PRIEST");
+			}
+			else {
+				index_3= getIndexClassAdversaire("PRIEST");
+			}
+		}
+		if(getIndexClassAdversaire("GUARD") != -1 && index_3 == -1) {
+			if( index_1 == -1 ) {
+				index_1 = getIndexClassAdversaire("GUARD");
+			}else if(index_2 == -1) {
+				index_2 = getIndexClassAdversaire("GUARD");
+			}
+			else {
+				index_3= getIndexClassAdversaire("GUARD");
+			}
+		}
+		
+		if( !board.playerBoards[1].fighters[index_1].isDead) {
+			index_cible = index_1 +1;
+		} else if ( !board.playerBoards[1].fighters[index_2].isDead) {
+			index_cible = index_2 +1;
+		}else {
+			index_cible= index_3 +1;
+		}
+		
+		if(index_tour == 0) {
+			
+			
+			
+			if(board.playerBoards[0].fighters[1].currentMana >= 1) {  // l'orc
+				index_tour++;
+			}
+			
+			action = "A1,REST,A1$A2,REST,A2";
+			
+			if(board.playerBoards[0].fighters[2].currentMana >=2) {
+				int min = board.playerBoards[1].fighters[0].currentLife;
+				int index_jambon = 0;
+				for (int i = 0; i < 3; i++) {
+					if(!board.playerBoards[1].fighters[i].isDead && min > board.playerBoards[1].fighters[i].currentLife) {
+						min = board.playerBoards[1].fighters[i].currentLife;
+						index_jambon = i;
+					}
+				}
+				
+				action += "$A3,FIREBOLT,E"+ Integer.toString(index_jambon +1);
+			}
+			else {
+				action += "$A3,REST,A3";
+			}
+			
+		
+		}else if (index_tour == 1) { // paladin , orc, archer
+			action = "A1,ATTACK,E" + Integer.toString(index_cible) + 
+					"$A2,YELL,E" + Integer.toString(index_cible) + 
+					"$A3,ATTACK,E" + Integer.toString(index_cible);
+			index_tour++;
+		}
+		else { // paladin , orc, archer
+			String action_paladin = "";
+			int guard_ennemy = getIndexClassAdversaire("GUARD");
+			int chaman_ennemy = getIndexClassAdversaire("CHAMAN");
+			if(board.playerBoards[0].fighters[0].currentMana >=2) {
+				if(guard_ennemy != -1 && !board.playerBoards[1].fighters[guard_ennemy].isDead) {
+					action_paladin = "A1,CHARGE,E" + Integer.toString(guard_ennemy +1);
+				} else if(chaman_ennemy != -1 && !board.playerBoards[1].fighters[chaman_ennemy].isDead) {
+					action_paladin = "A1,CHARGE,E" + Integer.toString(chaman_ennemy +1);
+				}
+				else {
+					action_paladin = "A1,CHARGE,E" + Integer.toString(index_cible);
+				}
+			}
+			else {
+				action_paladin = "A1,ATTACK,E" + Integer.toString(index_cible);
+			}
+			
+			
+			
+			action = action_paladin + 
+					"$A2,ATTACK,E" + Integer.toString(index_cible) + 
+					"$A3,ATTACK,E" + Integer.toString(index_cible);
+			index_tour = 0;
+		}
+		
+		return action;
+	}
+	
+	
 	//tour 0 ils attendent pour avoir 2 pa ou si le guard et le pretre ont 2 alors ils les utilisent 
 	//tour 1 l'orc lance son sort sur le guard ou un des 2 autres, les 2 autres attaque le meme mec
 	//tour 2 les 3 attaque la cible 
@@ -159,6 +294,6 @@ public class StratDeLaMorKiTu {
 				return index_cible = i;
 			}
 		}
-		return 0;
+		return -1;
 	}
 }

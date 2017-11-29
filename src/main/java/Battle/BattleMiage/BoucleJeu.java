@@ -15,7 +15,7 @@ public class BoucleJeu {
 	public final int NB_PLAYERS = 3;
 	int lvl_bot;
 	
-	StratDeLaMorKiTu strat_paul;
+	StratDeLaMorKiTu stratjambon;
 	
 	public BoucleJeu(ApacheRest r, String p, int lvl_bot) {
 		this.rest = r;
@@ -23,7 +23,7 @@ public class BoucleJeu {
 		this.lvl_bot = lvl_bot;
 		gson = new Gson();
 		this.randomGenerator = new Random();
-		strat_paul = new StratDeLaMorKiTu( this.lvl_bot);
+		stratjambon = new StratDeLaMorKiTu( this.lvl_bot);
 		
 		while(!GetStatut()) {
 			if(!canPlay) {
@@ -130,9 +130,9 @@ public class BoucleJeu {
 		}
 		String retour = "";
 		switch(current_nb) {
-			case 0 : retour = rest.Joue_Coup(this.id_partie, "GUARD"); System.out.println("Choisi Orc");break;
+			case 0 : retour = rest.Joue_Coup(this.id_partie, "PALADIN"); System.out.println("Choisi Orc");break;
 			case 1 : retour = rest.Joue_Coup(this.id_partie, "ORC");System.out.println("Choisi Guard");break;
-			case 2 : retour = rest.Joue_Coup(this.id_partie, "PRIEST");System.out.println("Choisi Priest");break;
+			case 2 : retour = rest.Joue_Coup(this.id_partie, "ARCHER");System.out.println("Choisi Priest");break;
 			default : retour = rest.Joue_Coup(this.id_partie, "ORC");System.out.println("Choisis Orc");
 		}
 		
@@ -141,8 +141,8 @@ public class BoucleJeu {
 	
 	public void Action_personnage() {
 		String action = "";
-		action = strat_paul.Action_Joueur(this.board);
-		
+		//action = strat_paul.Action_Joueur(this.board);
+		action = stratjambon.Action_bot_J(board);
 		
 		System.out.println("Coup : " + action);
 		String retour = rest.Joue_Coup(this.id_partie, action);
